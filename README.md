@@ -28,7 +28,7 @@ This is the backend repository for a full-stack social media platform, built wit
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/social-media-backend.git](https://github.com/your-username/social-media-backend.git)
+    git clone [https://github.com/Kyaw-ZinT/social-media-backend.git]
     cd social-media-backend
     ```
 2.  **Install dependencies:**
