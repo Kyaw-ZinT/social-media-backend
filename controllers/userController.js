@@ -101,34 +101,12 @@ exports.getUserPosts = async (req, res) => {
 
 exports.followUser = async (req, res) => {
   try {
-    const userToFollow = await userService.toggleFollow({ username: req.params.username });
-    const currentUser = await User.findById(req.user._id);
+    const result = await userService.toggleFollow(req.user._id, req.params.username);
 
-    if (!userToFollow) {
-      return res.status(404).json({ message: "User not found" });
+    if (!result.success) {
+      return res.status(400).json({ message: result.message });
     }
-
-    // ကိုယ့်ကိုယ်ကို follow လုပ်လို့မရအောင် စစ်မယ်
-    if (userToFollow._id.toString() === currentUser._id.toString()) {
-      return res.status(400).json({ message: "You cannot follow yourself" });
-    }
-
-    const isFollowing = currentUser.followings.includes(userToFollow._id);
-
-    if (isFollowing) {
-      // Unfollow လုပ်မယ်
-      currentUser.followings.pull(userToFollow._id);
-      userToFollow.followers.pull(currentUser._id);
-    } else {
-      // Follow လုပ်မယ်
-      currentUser.followings.push(userToFollow._id);
-      userToFollow.followers.push(currentUser._id);
-    }
-
-    await currentUser.save();
-    await userToFollow.save();
-
-    res.json({ message: isFollowing ? "Unfollowed successfully" : "Followed successfully" });
+    res.json({ message: result.message });
   } catch (error) {
     console.error("Error in followUser controller", error);
     res.status(500).json({ message: "Server error" });
