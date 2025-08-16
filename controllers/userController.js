@@ -130,6 +130,7 @@ exports.followUser = async (req, res) => {
 
     res.json({ message: isFollowing ? "Unfollowed successfully" : "Followed successfully" });
   } catch (error) {
+    console.error("Error in followUser controller", error);
     res.status(500).json({ message: "Server error" });
   }
 };
